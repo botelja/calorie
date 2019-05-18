@@ -20,6 +20,10 @@ const ItemCtrl = (function() {
   };
   //Public methods
   return {
+    getItems: function() {
+      return data.items;
+    },
+
     logData: function() {
       return data;
     }
@@ -28,8 +32,24 @@ const ItemCtrl = (function() {
 
 // UI Controller
 const UICtrl = (function() {
+  const UISelectors = {
+    itemList: '.list-group'
+  };
   //Public methods
-  return {};
+  return {
+    populateItems: function(items) {
+      let output = '';
+
+      items.map(function(item) {
+        output += `<li id="item-${item.id}" class="list-group-item">
+        <strong>${item.name}: </strong> <em>${item.calories} Calories</em>
+        <a href="#" class="float-right"><i class="fa fa-pen"></i></a>
+    </li>`;
+      });
+
+      document.querySelector(UISelectors.itemList).innerHTML = output;
+    }
+  };
 })();
 
 // App Controller
@@ -37,7 +57,11 @@ const App = (function(ItemCtrl, UICtrl) {
   //Public methods
   return {
     init: function() {
-      console.log('Initilazing app....');
+      //Fetch data
+      const items = ItemCtrl.getItems();
+
+      //Populate list with items
+      UICtrl.populateItems(items);
     }
   };
 })(ItemCtrl, UICtrl);
