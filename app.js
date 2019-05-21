@@ -11,9 +11,9 @@ const ItemCtrl = (function() {
   //Data Structure / State
   const data = {
     items: [
-      { id: 0, name: 'Steak', calories: 1200 },
-      { id: 1, name: 'Cookie', calories: 400 },
-      { id: 2, name: 'Eggs', calories: 300 }
+      // { id: 0, name: 'Steak', calories: 1200 },
+      // { id: 1, name: 'Cookie', calories: 400 },
+      // { id: 2, name: 'Eggs', calories: 300 }
     ],
     currentItem: null,
     totalCalories: 0
@@ -77,6 +77,27 @@ const UICtrl = (function() {
         calories: document.querySelector(UISelectors.caloriesItemInput).value
       };
     },
+    addListItem: function(item) {
+      //Create li element
+      const li = document.createElement('li');
+      //Add class
+      li.className = 'list-group-item';
+      //Add id
+      li.id = `item-${item.id}`;
+      //Add HTML
+      li.innerHTML = `<strong>${item.name}: </strong> <em>${
+        item.calories
+      } Calories</em>
+      <a href="#" class="float-right"><i class="fa fa-pen"></i></a>`;
+      //Insert item
+      document
+        .querySelector(UISelectors.itemList)
+        .insertAdjacentElement('beforeend', li);
+    },
+    clearInput: function() {
+      document.querySelector(UISelectors.nameItemInput).value = '';
+      document.querySelector(UISelectors.caloriesItemInput).value = '';
+    },
     getSelectors: function() {
       return UISelectors;
     }
@@ -104,6 +125,10 @@ const App = (function(ItemCtrl, UICtrl) {
     if (input.name !== '' && input.calories !== '') {
       //Add Item
       const newItem = ItemCtrl.addItem(input.name, input.calories);
+      //Add Item to UI
+      UICtrl.addListItem(newItem);
+      //Clear input
+      UICtrl.clearInput();
     } else {
       console.log('Not OK!!');
     }
