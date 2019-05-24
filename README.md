@@ -3,7 +3,7 @@
 ## Description
 
 This Calorie Tracker javascript application was created **purely with vanilla javascript** while following Brad Traversy's Udemy course ["Modern Javascript From The Beginning"](https://www.udemy.com/modern-javascript-from-the-beginning/).
-The purpose of this exercise exercise is to create a full CRUD application without the use of any frameworks whatsoever.
+The purpose of this exercise exercise is to create a full CRUD application without the use of any frameworks.
 
 ## Features
 
