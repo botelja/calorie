@@ -1,4 +1,36 @@
 // Sotrage Controller
+const StorageCtrl = (function() {
+  //Public methods
+  return {
+    storeItem: function(item) {
+      let items;
+      //Check if any items in localstorage
+      if (localStorage.getItem('items') === null) {
+        items = [];
+        //Push new item
+        items.push(item);
+        //Set localstorage
+        localStorage.setItem('items', JSON.stringify(items));
+      } else {
+        items = JSON.parse(localStorage.getItem('items'));
+        //Push new item
+        items.push(item);
+        //Reset localstorage
+        localStorage.setItem('items', JSON.stringify(items));
+      }
+    },
+    getItemsFromStorage: function() {
+      let items;
+      if (localStorage.getItem('items') === null) {
+        items = [];
+      } else {
+        items = JSON.parse(localStorage.getItem('items'));
+      }
+
+      return items;
+    }
+  };
+})();
 
 // Item Controller
 const ItemCtrl = (function() {
@@ -10,7 +42,7 @@ const ItemCtrl = (function() {
   };
   //Data Structure / State
   const data = {
-    items: [],
+    items: StorageCtrl.getItemsFromStorage(),
     currentItem: null,
     totalCalories: 0
   };
@@ -198,7 +230,7 @@ const UICtrl = (function() {
 })();
 
 // App Controller
-const App = (function(ItemCtrl, UICtrl) {
+const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
   //Load event listeners
   const loadEventListeners = function() {
     //Get UI selectors
@@ -258,6 +290,8 @@ const App = (function(ItemCtrl, UICtrl) {
       const totalCalories = ItemCtrl.getTotalCalories();
       //Add total calories to UI
       UICtrl.showTotalCalories(totalCalories);
+      //Store to localstorage
+      StorageCtrl.storeItem(newItem);
       //Clear input
       UICtrl.clearInput();
     } else {
@@ -354,6 +388,6 @@ const App = (function(ItemCtrl, UICtrl) {
       loadEventListeners();
     }
   };
-})(ItemCtrl, UICtrl);
+})(ItemCtrl, StorageCtrl, UICtrl);
 
 App.init();
